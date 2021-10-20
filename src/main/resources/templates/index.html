@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="Libreria generada en Spring Boot + Thymeleaf" name="description"/>
+        <meta content="Cristian Solís" name="author"/>
+        <title>Inicio - Libreria</title>
+        <!-- CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+            <div class="container">
+                <a class="navbar-brand" th:href="@{/}">Inicio</a>
+                <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                        class="navbar-toggler"
+                        data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-md-0 w-100">
+                        <!--DROPDOWN AUTORES-->
+                        <li class="nav-item dropdown">
+                            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                               id="dropdown-autores" role="button">
+                                Autores
+                            </a>
+                            <ul aria-labelledby="dropdown-autores" class="dropdown-menu dropdown-menu-dark">
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/autores}">Mostrar todos</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/autores/crear}">Crear autor</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--DROPDOWN editores-->
+                        <li class="nav-item dropdown">
+                            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                               id="dropdown-editoriales" role="button">
+                               Editoriales
+                            </a>
+                            <ul aria-labelledby="dropdown-editoriales" class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" th:href="@{/editoriales}">Mostrar todas</a></li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/editoriales/crear}">Crear editorial</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!--DROPDOWN LIBROS-->
+                        <li class="nav-item dropdown">
+                            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                               id="dropdown-libros" role="button">
+                                Libros
+                            </a>
+                            <ul aria-labelledby="dropdown-libros" class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" th:href="@{/libros}">Mostrar todos</a></li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/libros/crear}">Crear libro</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-5 main">
+            <div class="row my-auto g-4 justify-content-evenly">
+                <div class="card col-lg-5 p-0 clickable-card">
+                    <a class="text-decoration-none" th:href="@{/autores}">
+                        <div class="row g-0">
+                            <div class="col-md-4 index-autores"></div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Autores</h5>
+                                    <p class="card-text">Acceda al listado de autores</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="card col-lg-5 p-0 clickable-card">
+                    <a class="text-decoration-none" th:href="@{/editoriales}">
+                        <div class="row g-0">
+                            <div class="col-md-4 index-editoriales"></div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Editoriales</h5>
+                                    <p class="card-text">Acceda al listado de editoriales</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer py-3 bg-dark fixed-bottom">
+            <div class="container d-flex justify-content-center">
+                <span class="text-muted">&copy; Bruno Redzio - 2021</span>
+            </div>
+        </footer>
+
+        <!-- JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </body>
+</html>
