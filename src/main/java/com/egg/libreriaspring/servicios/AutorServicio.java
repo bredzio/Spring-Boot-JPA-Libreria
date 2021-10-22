@@ -24,7 +24,13 @@ public class AutorServicio {
             }
             
             if(autorRepositorio.buscarAutoresPorNombre(nombre).isEmpty()==false){
-                throw new Exception ("autorRegistrado");
+                if(autorRepositorio.buscarAutoresPorNombre(nombre).get(0).getAlta()==false){
+                    throw new Exception ("autorRegistrado");
+                }
+            }
+            
+            if(autorRepositorio.buscarAutoresPorNombre(nombre).isEmpty()==false){
+                    throw new Exception ("autorEnLista");
             }
             
             autor.setNombre(nombre);
@@ -41,9 +47,16 @@ public class AutorServicio {
     public void modificarAutor(String id,String nombre) throws Exception{
         nombre=nombre.toUpperCase();
         try{
+            if(autorRepositorio.buscarAutoresPorNombre(nombre).isEmpty()==false){
+                if(autorRepositorio.buscarAutoresPorNombre(nombre).get(0).getAlta()==true){
+                    throw new Exception("autorEnLista");
+                }
+            }
             
             if(autorRepositorio.buscarAutoresPorNombre(nombre).isEmpty()==false){
-                throw new Exception("El autor ya se encontraba registrado");
+                if(autorRepositorio.buscarAutoresPorNombre(nombre).get(0).getAlta()==false){
+                    throw new Exception ("autorRegistrado");
+                }
             }
             
             Autor autor = autorRepositorio.findById(id).get();

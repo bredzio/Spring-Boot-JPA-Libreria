@@ -83,18 +83,39 @@ public class AutorController {
         }catch(Exception e){
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error",e.getMessage());
-            //mav.setViewName("redirect:/autores");
             mav.setViewName("redirect:/editar/{id}");
         }
         
         return mav;
     }
     
+    @GetMapping("/reactivar/{nombre}")
+    public ModelAndView reactivarAutor(@PathVariable String nombre,HttpServletRequest request) throws Exception{
+        ModelAndView mav = new ModelAndView("autor-alta");
+        
+        mav.addObject("title", "Reactivar Autor");        
+        mav.addObject("autor", servicio.buscarPorNombre(nombre)); 
+        mav.addObject("action", "guardar2"); 
+
+        return mav;
+    }
+    
+    @PostMapping("/guardar2")
+    public RedirectView activarOn(@RequestParam String id, RedirectAttributes redirectAttributes) throws Exception{
+        try{
+            servicio.reactivar(id);
+            redirectAttributes.addFlashAttribute("exito","AUTOR DADO DE ALTA NUEVAMENTE");
+                     
+        }catch(Exception e){
+            return new RedirectView("/autores");
+        }
+        
+        return new RedirectView("/autores");
+    }
+    
+    
     @PostMapping("/guardar")
     public RedirectView guardar(@RequestParam String nombre, RedirectAttributes redirectAttributes) throws Exception{
-        ModelAndView mav = new ModelAndView("autor-formulario");
-        ModelAndView mav2 = new ModelAndView("autor-alta");
-
         try{
             if (nombre == null || nombre.trim().isEmpty()) {
                 throw new Exception("EL NOMBRE DEL AUTOR ES OBLIGATORIO");
@@ -103,23 +124,17 @@ public class AutorController {
             redirectAttributes.addFlashAttribute("exito","AUTOR DADO DE ALTA");
            
         }catch(Exception e){
-            return new RedirectView("/autores/reactivar/"+nombre);
+            if(e.getMessage().equals("autorEnLista")){
+                redirectAttributes.addFlashAttribute("error","EL AUTOR YA SE ENCUENTRA EN LA LISTA");
+                return new RedirectView("/autores");
+            }else{
+                 return new RedirectView("/autores/reactivar/"+nombre);
+            }
             
         }
         
         return new RedirectView("/autores");
     }
-    
-    @GetMapping("/reactivar/{nombre}")
-    public ModelAndView reactivarAutor(@PathVariable String nombre,HttpServletRequest request) throws Exception{
-        ModelAndView mav = new ModelAndView("autor-alta");
-        
-        mav.addObject("title", "Reactivar Autor");        
-        mav.addObject("autor", servicio.buscarPorNombre(nombre));  
-
-        return mav;
-    }
-    
     
     @PostMapping("/modificar")
     public RedirectView modificar(@RequestParam String id, @RequestParam String nombre, RedirectAttributes redirectAttributes) throws Exception{
@@ -128,12 +143,13 @@ public class AutorController {
             servicio.modificarAutor(id, nombre);
             redirectAttributes.addFlashAttribute("exito","AUTOR MODIFICADO CON EXITO");
         }catch(Exception e){
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error",e.getMessage());
-            //mav.setViewName("redirect:/autores");
-            mav.setViewName("redirect:/editar/{id}");
+            if(e.getMessage().equals("autorEnLista")){
+                redirectAttributes.addFlashAttribute("error","HAY UN AUTOR REGISTRADO CON ESE NOMBRE");
+                return new RedirectView("/autores");
+            }else{
+                 return new RedirectView("/autores/reactivar/"+nombre);
+            }
         }
-
         return new RedirectView("/autores");
     }
     

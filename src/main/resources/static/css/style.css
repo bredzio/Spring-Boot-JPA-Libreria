@@ -43,6 +43,20 @@
     width: 30rem;
     height: 20rem;
 }
+.grid-container {
+    display: grid; 
+    grid-template-columns: 1fr 8fr; 
+    margin-left: 10px;
+    gap: 0px 20px; 
+    
+  }
+
+  .grid-item {
+    border-radius: 4px;
+    width: 50px;
+  }
+
+
 
 .libroForm{
     background-image: url(../img/libro-card-index.jpg);

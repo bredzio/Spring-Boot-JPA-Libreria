@@ -15,24 +15,58 @@ public class EditorialServicio {
     private EditorialRepositorio editorialRepositorio;
     
     @Transactional
-    public void crearEditorial(String nombre){
-     
+    public void crearEditorial(String nombre)throws Exception{
+     nombre=nombre.toUpperCase();
+        try{
             Editorial editorial = new Editorial();
-
-            editorial.setNombre(nombre.toUpperCase());
+            if(nombre==null || nombre.trim().isEmpty()){
+                throw new Exception("EL NOMBRE DE LA EDITORIAL ES OBLIGATORIO");
+            }
+            if(editorialRepositorio.buscarEditorialesPorNombre(nombre).isEmpty()==false){
+                if(editorialRepositorio.buscarEditorialesPorNombre(nombre).get(0).getAlta()==false){
+                    throw new Exception ("editorialRegistrado");
+                }
+            }
+            
+            if(editorialRepositorio.buscarEditorialesPorNombre(nombre).isEmpty()==false){
+                    throw new Exception ("editorialEnLista");
+            }
+            
+            editorial.setNombre(nombre);
             editorial.setAlta(true);
-
             editorialRepositorio.save(editorial);
-      
+        }catch(Exception e){
+            throw e;
+        }    
     }
     
     @Transactional
-    public void modificarEditorial(String id,String nombre){
-        Editorial editorial = editorialRepositorio.findById(id).get();
-              
-        editorial.setNombre(nombre);
-        
-        editorialRepositorio.save(editorial);
+    public void modificarEditorial(String id,String nombre)throws Exception{
+        nombre=nombre.toUpperCase();
+        try{    
+           if(editorialRepositorio.buscarEditorialesPorNombre(nombre).isEmpty()==false){
+                if(editorialRepositorio.buscarEditorialesPorNombre(nombre).get(0).getAlta()==true){
+                    throw new Exception("editorialEnLista");
+                }
+            }
+            
+            if(editorialRepositorio.buscarEditorialesPorNombre(nombre).isEmpty()==false){
+                if(editorialRepositorio.buscarEditorialesPorNombre(nombre).get(0).getAlta()==false){
+                    throw new Exception ("editorialRegistrado");
+                }
+            }
+            
+            
+            
+            Editorial editorial = editorialRepositorio.findById(id).get();
+
+            editorial.setNombre(nombre);
+
+            editorialRepositorio.save(editorial);
+            
+            }catch(Exception e){
+            throw e;
+        }
     }
     
     @Transactional(readOnly = true)
@@ -48,8 +82,29 @@ public class EditorialServicio {
     
     @Transactional
     public void eliminar(String id){
+        try{
         Editorial editorial = editorialRepositorio.findById(id).get();
         editorial.setAlta(false);
         editorialRepositorio.save(editorial);
+        }catch(Exception e){
+            throw e;
+        }
+    }
+    
+    @Transactional
+    public void reactivar(String id){
+        try{
+            Editorial editorial = editorialRepositorio.findById(id).get();
+            editorial.setAlta(true);
+            editorialRepositorio.save(editorial);
+        }catch(Exception e){
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly=true)
+    public Editorial buscarPorNombre(String nombre){
+        Editorial editorialOptional = editorialRepositorio.buscarEditorialesPorNombre(nombre).get(0);
+        return editorialOptional;
     }
 }

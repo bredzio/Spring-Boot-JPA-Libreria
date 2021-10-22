@@ -10,7 +10,7 @@
         <!-- CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
         <link rel="stylesheet" th:href="@{/css/style.css}"/>
-        <link rel="stylesheet" href="/static/css/style.css"/>
+        <link rel="stylesheet" href="../static/css/style.css"/>
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
@@ -77,6 +77,7 @@
             <div class="row my-auto g-4 justify-content-evenly">
              
                 <div class="col-lg-5 p-0"> 
+                    
                     <form autocomplete="off" class="needs-validation" id="formulario" method="POST"
                         novalidate th:action="@{/autores/__${action}__}" th:object="${autor}">
                         
@@ -97,12 +98,24 @@
                 
                         <div class="row">
                             <h5>¿Desea reactivar nuevamente este autor?</h5>
-                            <div class="col-xl-10">
-                                <button class="btn btn-success" th:text="Si" type="submit"></button>
-                                <button class="btn btn-danger" th:text="No" type="submit"></button>
-                            </div>
-                        </div>
+                        </div>                            
+                                <div class="grid-container">
+                                    <div class="grid-item">
+                                        <form method="post" th:action="@{/autores/guardar2}">
+                                            <button class="btn btn-success btn-md" type="submit">Si</button>
+                                        </form>
+                                    </div>
+                                    
+                                    <div class="grid-item">
+                                        <form method="get" th:action="@{/autores}">
+                                            <button class="btn btn-danger btn-md" type="submit">No</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                      
                     </form>
+
                 </div>
 
                 <div class="col-lg-6 p-2 autorForm">
@@ -124,13 +137,12 @@
         <script>
             (() => {
             "use strict";
-
             const form = document.getElementById("formulario");
             form.addEventListener("submit", (event) => {
-            if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-            }
+                if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                }
 
             form.classList.add("was-validated");
             }, false);
