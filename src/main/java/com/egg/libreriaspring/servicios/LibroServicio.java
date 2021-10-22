@@ -20,36 +20,79 @@ public class LibroServicio {
     private LibroRepositorio libroRepositorio;
     
     @Transactional
-    public void crearLibro(String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Autor autor, Editorial editorial){
-        Libro libro = new Libro();
-        String isbn= utilidad1.generarIsbn();
-        libro.setIsbn(isbn);
-        libro.setTitulo(titulo);
-        libro.setAnio(anio);
-        libro.setEjemplares(ejemplares);
-        libro.setEjemplaresPrestados(ejemplaresPrestados);
-        libro.setEjemplaresRestantes(ejemplares-ejemplaresPrestados);
-        libro.setAlta(true);
-        libro.setAutor(autor);
-        libro.setEditorial(editorial);
-        
-        libroRepositorio.save(libro);
+    public void crearLibro(String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Autor autor, Editorial editorial)throws Exception{
+        titulo=titulo.toUpperCase();
+        try{
+            Libro libro = new Libro();
+            if(titulo==null || titulo.trim().isEmpty()){
+                throw new Exception("EL TITULO DEL LIBRO ES OBLIGATORIO");
+            }
+            
+            if(libroRepositorio.buscarLibrosPorNombre(titulo).isEmpty()==false){
+                if(libroRepositorio.buscarLibrosPorNombre(titulo).get(0).getAlta()==false){
+                    throw new Exception ("libroRegistrado");
+                }
+            }
+            
+            if(libroRepositorio.buscarLibrosPorNombre(titulo).isEmpty()==false){
+                    throw new Exception ("libroEnLista");
+            }
+            
+            if(ejemplares<ejemplaresPrestados){
+                throw new Exception("INGRESÓ MÁS EJEMPLARES PRESTADOS DE LOS EXISTENTES");
+            }
+            
+            String isbn= utilidad1.generarIsbn();
+            libro.setIsbn(isbn);
+            libro.setTitulo(titulo);
+            libro.setAnio(anio);
+            libro.setEjemplares(ejemplares);
+            libro.setEjemplaresPrestados(ejemplaresPrestados);
+            libro.setEjemplaresRestantes(ejemplares-ejemplaresPrestados);
+            libro.setAlta(true);
+            libro.setAutor(autor);
+            libro.setEditorial(editorial);
+
+            libroRepositorio.save(libro);
+        }catch(Exception e){
+            throw e;
+        }
     }
     
     @Transactional
-    public void modificarLibro(String id,String isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Autor autor, Editorial editorial){
-        Libro libro = libroRepositorio.findById(id).get();
-        
-        libro.setIsbn(isbn);
-        libro.setTitulo(titulo);
-        libro.setAnio(anio);
-        libro.setEjemplares(ejemplares);
-        libro.setEjemplaresPrestados(ejemplaresPrestados);
-        libro.setEjemplaresRestantes(ejemplares-ejemplaresPrestados);
-        libro.setAutor(autor);
-        libro.setEditorial(editorial);
-        
-        libroRepositorio.save(libro);
+    public void modificarLibro(String id,String isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Autor autor, Editorial editorial)throws Exception{
+        titulo=titulo.toUpperCase();
+        try{
+            if(libroRepositorio.buscarLibrosPorNombre(titulo).isEmpty()==false){
+                if(libroRepositorio.buscarLibrosPorNombre(titulo).get(0).getAlta()==false){
+                    throw new Exception ("libroRegistrado");
+                }
+            }
+            
+            if(libroRepositorio.buscarLibrosPorNombre(titulo).isEmpty()==false){
+                    throw new Exception ("libroEnLista");
+            }
+            
+            if(ejemplares<ejemplaresPrestados){
+                throw new Exception("INGRESÓ MÁS EJEMPLARES PRESTADOS DE LOS EXISTENTES");
+            }
+            
+            
+            Libro libro = libroRepositorio.findById(id).get();
+
+            libro.setIsbn(isbn);
+            libro.setTitulo(titulo);
+            libro.setAnio(anio);
+            libro.setEjemplares(ejemplares);
+            libro.setEjemplaresPrestados(ejemplaresPrestados);
+            libro.setEjemplaresRestantes(ejemplares-ejemplaresPrestados);
+            libro.setAutor(autor);
+            libro.setEditorial(editorial);
+
+            libroRepositorio.save(libro);
+        }catch(Exception e){
+            throw e;
+        }
     }
     
     @Transactional (readOnly=true)
@@ -65,9 +108,30 @@ public class LibroServicio {
     
     @Transactional
     public void eliminar(String id){
-        Libro libro = libroRepositorio.findById(id).get();
-        libro.setAlta(false);
-        libroRepositorio.save(libro);
+        try{
+            Libro libro = libroRepositorio.findById(id).get();
+            libro.setAlta(false);
+            libroRepositorio.save(libro);
+        }catch(Exception e){
+            throw e;
+        }
+    }
+    
+    @Transactional
+    public void reactivar(String id){
+        try{
+            Libro libro = libroRepositorio.findById(id).get();
+            libro.setAlta(true);
+            libroRepositorio.save(libro);
+        }catch(Exception e){
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly=true)
+    public Libro buscarPorNombre(String titulo){
+        Libro libroOptional = libroRepositorio.buscarLibrosPorNombre(titulo).get(0);
+        return libroOptional;
     }
     
     

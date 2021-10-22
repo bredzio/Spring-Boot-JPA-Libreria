@@ -71,6 +71,9 @@
         <h1>Listado de libros</h1>
         <hr class="mb-5"/>
         <div class="alert alert-danger" th:if="${excepcion != null}" th:text="${excepcion}"></div>
+        <div class="alert alert-success" th:if="${exito != null}" th:text="${exito}"></div>
+        <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+
         <div th:unless="${excepcion != null}">
             <div th:if="${libros.size}==${cont}">
                 <h5>Todavía no hay libros cargados. <a th:href="@{/libros/crear}">Cargar libro.</a></h5>

@@ -71,7 +71,7 @@
         </nav>
 
         <div class="container mt-5 main">
-            <h1 th:text="${title}">Reactivar autor</h1>
+            <h1 th:text="${title}">Reactivar libro</h1>
             <hr class="mb-5 col-xl-12"/>
 
             <div class="row my-auto g-4 justify-content-evenly">
@@ -79,35 +79,35 @@
                 <div class="col-lg-5 p-0"> 
                     
                     <form autocomplete="off" class="needs-validation" id="formulario" method="POST"
-                        novalidate th:action="@{/autores/__${action}__}" th:object="${autor}">
+                        novalidate th:action="@{/libros/__${action}__}" th:object="${libro}">
                         
                    
                         <div class="form-floating mb-3 col-xl-10">
                                 <input class="form-control" id="id" placeholder="Documento" required th:field="*{id}"
-                                    th:readonly="${autor.id != null}"
+                                    th:readonly="${libro.id != null}"
                                     type="text"/>
                                 <label for="id">#ID</label>
                         </div>
                     
                         
                         <div class="form-floating mb-3 col-xl-10">
-                            <input class="form-control" id="titulo" placeholder="Nombre" required th:field="*{titulo}" th:readonly="${autor.titulo != null}" type="text"/>
+                            <input class="form-control" id="titulo" placeholder="Titulo" required th:field="*{titulo}" th:readonly="${libro.titulo != null}" type="text"/>
                             <label for="titulo">Título</label>
                         </div>
                     
                 
                         <div class="row">
-                            <h5>¿Desea reactivar nuevamente este autor?</h5>
+                            <h5>¿Desea reactivar nuevamente este titulo?</h5>
                         </div>                            
                                 <div class="grid-container">
                                     <div class="grid-item">
-                                        <form method="post" th:action="@{/autores/guardar2}">
+                                        <form method="post" th:action="@{/libros/guardar2}">
                                             <button class="btn btn-success btn-md" type="submit">Si</button>
                                         </form>
                                     </div>
                                     
                                     <div class="grid-item">
-                                        <form method="get" th:action="@{/autores}">
+                                        <form method="get" th:action="@{/libros}">
                                             <button class="btn btn-danger btn-md" type="submit">No</button>
                                         </form>
                                     </div>
@@ -118,7 +118,7 @@
 
                 </div>
 
-                <div class="col-lg-6 p-2 autorForm">
+                <div class="col-lg-6 p-2 libroForm">
                 </div>
 
             </div>
