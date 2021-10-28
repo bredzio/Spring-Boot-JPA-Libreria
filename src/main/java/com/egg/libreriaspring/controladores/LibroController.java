@@ -11,11 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -136,8 +132,11 @@ public class LibroController {
             if(e.getMessage().equals("libroEnLista")){
                 redirectAttributes.addFlashAttribute("error","EL LIBRO YA SE ENCUENTRA EN LA LISTA");
                 return new RedirectView("/libros");
+            }else if(e.getMessage().equals("libroPrestadosMayor")){
+                 redirectAttributes.addFlashAttribute("error","INGRESO MAS LIBROS PRESTADOS DE LOS EXISTENTES");
+                return new RedirectView("/libros");
             }else{
-                 return new RedirectView("/libros/reactivar/"+titulo);
+                return new RedirectView("/libros/reactivar/"+titulo);
             }
         }
         return new RedirectView("/libros");

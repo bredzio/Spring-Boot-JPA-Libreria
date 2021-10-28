@@ -39,7 +39,7 @@ public class LibroServicio {
             }
             
             if(ejemplares<ejemplaresPrestados){
-                throw new Exception("INGRESÓ MÁS EJEMPLARES PRESTADOS DE LOS EXISTENTES");
+                throw new Exception("libroPrestadosMayor");
             }
             
             String isbn= utilidad1.generarIsbn();
@@ -74,7 +74,7 @@ public class LibroServicio {
             }
             
             if(ejemplares<ejemplaresPrestados){
-                throw new Exception("INGRESÓ MÁS EJEMPLARES PRESTADOS DE LOS EXISTENTES");
+                throw new Exception("libroPrestadosMayor");
             }
             
             

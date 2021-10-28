@@ -102,9 +102,9 @@
                 </div>
                 
                 <div class="form-floating mb-3 col-xl-6">
-                    <input class="form-control" id="anio" placeholder="Año" required th:field="*{anio}" type="number"/>
+                    <input class="form-control" id="anio" placeholder="Año" required th:field="*{anio}" type="number" min="0" max="2025"/>
                     <label for="anio">Año</label>
-                    <div class="invalid-feedback">El año es obligatorio</div>
+                    <div class="invalid-feedback" id="demoAnio">El año es obligatorio</div>
                 </div>
 
                 <div class="form-floating mb-3 col-xl-6">
@@ -116,7 +116,7 @@
                 <div class="form-floating mb-3 col-xl-6">
                     <input class="form-control" id="ejemplaresPrestados" placeholder="Cantidad de Ejemplares Prestados" required th:field="*{ejemplaresPrestados}" type="number" min="0" max="100" value="0"/>
                     <label for="ejemplaresPrestados">Ejemplares Prestados</label>
-                    <div class="invalid-feedback">La cantidad de ejemplares prestados es obligatoria</div>
+                    <div class="invalid-feedback" id="demo">La cantidad de ejemplares prestados es obligatoria</div>
                 </div>
 
                 <div class="form-floating mb-3 col-xl-6">
@@ -158,19 +158,22 @@
             (() => {
             "use strict";
 
-            const form = document.getElementById("formulario");
+            const form = document.getElementById("formulario");    
             form.addEventListener("submit", (event) => {
-            if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
+                if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
             }
 
-            form.classList.add("was-validated");
-            }, false);
+                form.classList.add("was-validated");
+                }, false);
             })()
+
+
         </script>
 
         <script th:src="@{/assets/main.js}"></script>
-
+        <script src="/static/assets/main.js"></script>
+        
     </body>
 </html>
