@@ -83,9 +83,7 @@ public class AutorServicio {
     @Transactional
     public void eliminar(String id){
         try{
-            Autor autor = autorRepositorio.findById(id).get();
-            autor.setAlta(false);
-            autorRepositorio.save(autor);
+            autorRepositorio.deleteById(id);
         }catch(Exception e){
             throw e;
         }

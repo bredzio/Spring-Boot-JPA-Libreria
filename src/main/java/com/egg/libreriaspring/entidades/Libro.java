@@ -1,11 +1,18 @@
 package com.egg.libreriaspring.entidades;
 
+import java.time.LocalDateTime;
 import javax.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE libro SET alta = false WHERE id = ?")
 public class Libro {
     
     @Id
@@ -19,6 +26,13 @@ public class Libro {
     private Integer ejemplaresPrestados;
     private Integer ejemplaresRestantes;
     private Boolean alta;
+    
+    @CreatedDate
+    @Column(nullable=false, updatable=false)
+    private LocalDateTime creacion;
+    
+    @LastModifiedDate
+    private LocalDateTime modificacion;
     
     @JoinColumn(nullable=false)
     @ManyToOne

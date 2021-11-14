@@ -83,9 +83,7 @@ public class EditorialServicio {
     @Transactional
     public void eliminar(String id){
         try{
-        Editorial editorial = editorialRepositorio.findById(id).get();
-        editorial.setAlta(false);
-        editorialRepositorio.save(editorial);
+        editorialRepositorio.deleteById(id);
         }catch(Exception e){
             throw e;
         }

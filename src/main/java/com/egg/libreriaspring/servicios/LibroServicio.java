@@ -60,7 +60,7 @@ public class LibroServicio {
     }
     
     @Transactional
-    public void modificarLibro(String id,String isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Autor autor, Editorial editorial)throws Exception{
+    public void modificarLibro(String id,String isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados)throws Exception{
         titulo=titulo.toUpperCase();
         try{
             if(libroRepositorio.buscarLibrosPorNombre(titulo).isEmpty()==false){
@@ -86,8 +86,6 @@ public class LibroServicio {
             libro.setEjemplares(ejemplares);
             libro.setEjemplaresPrestados(ejemplaresPrestados);
             libro.setEjemplaresRestantes(ejemplares-ejemplaresPrestados);
-            libro.setAutor(autor);
-            libro.setEditorial(editorial);
 
             libroRepositorio.save(libro);
         }catch(Exception e){
@@ -109,9 +107,7 @@ public class LibroServicio {
     @Transactional
     public void eliminar(String id){
         try{
-            Libro libro = libroRepositorio.findById(id).get();
-            libro.setAlta(false);
-            libroRepositorio.save(libro);
+            libroRepositorio.deleteById(id);
         }catch(Exception e){
             throw e;
         }

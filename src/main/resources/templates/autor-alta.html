@@ -13,62 +13,7 @@
         <link rel="stylesheet" href="../static/css/style.css"/>
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-            <div class="container">
-                <a class="navbar-brand" th:href="@{/}">Inicio</a>
-                <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
-                        class="navbar-toggler"
-                        data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mb-2 mb-md-0 w-100">
-                        <!--DROPDOWN AUTORES-->
-                        <li class="nav-item dropdown">
-                            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                               id="dropdown-autores" role="button">
-                                Autores
-                            </a>
-                            <ul aria-labelledby="dropdown-autores" class="dropdown-menu dropdown-menu-dark">
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/autores}">Mostrar todos</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/autores/crear}">Crear autor</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!--DROPDOWN editores-->
-                        <li class="nav-item dropdown">
-                            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                               id="dropdown-editoriales" role="button">
-                               Editoriales
-                            </a>
-                            <ul aria-labelledby="dropdown-editoriales" class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" th:href="@{/editoriales}">Mostrar todas</a></li>
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/editoriales/crear}">Crear editorial</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <!--DROPDOWN LIBROS-->
-                        <li class="nav-item dropdown">
-                            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                               id="dropdown-libros" role="button">
-                                Libros
-                            </a>
-                            <ul aria-labelledby="dropdown-libros" class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" th:href="@{/libros}">Mostrar todos</a></li>
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/libros/crear}">Crear libro</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <navbar th:replace="fragmentos :: navbar"></navbar>
 
         <div class="container mt-5 main">
             <h1 th:text="${title}">Reactivar autor</h1>

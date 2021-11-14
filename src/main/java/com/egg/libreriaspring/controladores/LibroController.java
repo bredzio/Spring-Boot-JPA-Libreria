@@ -80,9 +80,7 @@ public class LibroController {
     public ModelAndView editarLibro(@PathVariable String id,RedirectAttributes redirectAttributes) throws Exception {
         ModelAndView mav = new ModelAndView("libro-formulario");
         try{
-            mav.addObject("libro", libroServicio.buscarPorId(id));
-            mav.addObject("autores", autorServicio.buscarTodos());
-            mav.addObject("editoriales", editorialServicio.buscarTodos());
+            mav.addObject("libro", libroServicio.buscarPorId(id));            
             mav.addObject("title", "Editar Libro");
             mav.addObject("action", "modificar");
         }catch(Exception e)    {
@@ -143,10 +141,10 @@ public class LibroController {
     }
     
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam String id,@RequestParam String isbn,@RequestParam String titulo,@RequestParam Integer anio, @RequestParam Integer ejemplares, @RequestParam Integer ejemplaresPrestados, @RequestParam Autor autor, @RequestParam Editorial editorial,RedirectAttributes redirectAttributes) throws Exception {
+    public RedirectView modificar(@RequestParam String id,@RequestParam String isbn,@RequestParam String titulo,@RequestParam Integer anio, @RequestParam Integer ejemplares, @RequestParam Integer ejemplaresPrestados, RedirectAttributes redirectAttributes) throws Exception {
         ModelAndView mav = new ModelAndView("libro-formulario");
         try{
-            libroServicio.modificarLibro(id, isbn, titulo, anio , ejemplares, ejemplaresPrestados, autor, editorial);
+            libroServicio.modificarLibro(id, isbn, titulo, anio , ejemplares, ejemplaresPrestados);
             redirectAttributes.addFlashAttribute("exito","LIBRO MODIFICADO CON EXITO");
         }catch(Exception e){
             if(e.getMessage().equals("libroEnLista")){
