@@ -53,8 +53,28 @@
                         </li>
                     </ul>
                 </li>
+
+                <!--DROPDOWN USUARIOS-->
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                       id="dropdown-usuarios" role="button">
+                        Usuarios
+                    </a>
+                    <ul aria-labelledby="dropdown-libros" class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" th:href="@{/usuarios}">Mostrar todos</a></li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/usuarios/crear}">Crear usuario</a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
+
+        <div class="text-end">
+            <a class="btn btn-light" th:href="@{/logout}">Finalizar sesión</a>
+        </div>
+        
     </div>
 </nav>
 
