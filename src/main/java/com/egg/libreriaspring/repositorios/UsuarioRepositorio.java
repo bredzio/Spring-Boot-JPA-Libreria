@@ -2,6 +2,7 @@ package com.egg.libreriaspring.repositorios;
 
 import com.egg.libreriaspring.entidades.Usuario;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,4 +35,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long>{
     
     // Creación de consulta a partir del nombre de método
     boolean existsByCorreo(String correo);
+    
+    @Query("SELECT a FROM Usuario a WHERE a.correo = :correo")
+    List<Usuario> buscarUsuariosPorCorreo(@Param("correo") String correo);
 }

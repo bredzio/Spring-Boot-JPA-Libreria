@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -56,6 +56,16 @@
                             <label for="fechaNacimiento">Fecha de Nacimiento</label>
                             <div class="invalid-feedback">La fecha de nacimiento es obligatoria</div>
                         </div>
+
+                        <div class="form-floating mb-3 col-xl-6">
+                            <select aria-label="Elegir rol" class="form-select" id="rol" th:field="*{rol}" required>
+                                <option selected value="">Elegir rol</option>
+                                <option th:each="rol : ${roles}" th:text="${rol.nombre}"
+                                        th:value="${rol.id}"></option>
+                            </select>
+                            <label for="rol">Rol</label>
+                            <div class="invalid-feedback">El rol es obligatorio</div>
+                        </div>
                         
                         <div class="form-floating mb-3 col-xl-6">
                             <input class="form-control" id="correo" placeholder="Correo" required th:field="*{correo}" type="text"/>
@@ -64,12 +74,11 @@
                         </div>
 
                         <div class="form-floating mb-3 col-xl-6">
-                            <input class="form-control" id="clave" placeholder="Clave" required th:field="*{clave}" type="password"/>
+                            <input class="form-control" id="clave" placeholder="clave" required th:field="*{clave}" type="password"/>
                             <label for="nombre">Clave</label>
                             <div class="invalid-feedback">La clave es obligatoria</div>
                         </div>
 
-                
                         <div class="row">
                             <div class="col-xl-10">
                                 <button class="btn btn-success" th:text="${action == 'guardar'} ? 'Crear Usuario' : 'Guardar cambios'"

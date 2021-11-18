@@ -1,5 +1,6 @@
 package com.egg.libreriaspring.controladores;
 
+import com.egg.libreriaspring.entidades.Rol;
 import com.egg.libreriaspring.entidades.Usuario;
 import com.egg.libreriaspring.servicios.UsuarioServicio;
 import java.security.Principal;
@@ -66,11 +67,11 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    public RedirectView signup(@ModelAttribute Usuario usuario, RedirectAttributes attributes, HttpServletRequest request) {
+    public RedirectView signup(@RequestParam Rol rol,@ModelAttribute Usuario usuario, RedirectAttributes attributes, HttpServletRequest request) {
         RedirectView redirectView = new RedirectView("/login");
-
+    
         try {
-            usuarioServicio.crear(usuario.getDni(), usuario.getNombre(), usuario.getApellido(), usuario.getFechaNacimiento(), usuario.getCorreo(), usuario.getClave());
+            usuarioServicio.crear(usuario.getDni(), usuario.getNombre(), usuario.getApellido(), usuario.getFechaNacimiento(), usuario.getCorreo(), usuario.getClave(),rol);
             attributes.addFlashAttribute("exito", "SE HA REGISTRADO CON ÉXITO.");
             //request.login(correo, clave);
             //redirectView.setUrl("/index");

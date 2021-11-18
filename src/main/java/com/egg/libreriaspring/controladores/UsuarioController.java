@@ -1,6 +1,8 @@
 package com.egg.libreriaspring.controladores;
 
+import com.egg.libreriaspring.entidades.Rol;
 import com.egg.libreriaspring.entidades.Usuario;
+import com.egg.libreriaspring.servicios.RolServicio;
 import com.egg.libreriaspring.servicios.UsuarioServicio;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
@@ -8,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +30,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioServicio usuarioServicio;
     
+    @Autowired
+    private RolServicio rolServicio;
+    
     @GetMapping
     public ModelAndView mostrarTodos(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("usuarios");
@@ -42,45 +48,82 @@ public class UsuarioController {
     }
     
     @GetMapping("/crear")
-    public ModelAndView crearUsuario(HttpServletRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView crearUsuario(RedirectAttributes redirectAttributes,HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView("usuario-formulario");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        try{
+            if (flashMap != null) {
+                mav.addObject("error", flashMap.get("error"));
+                mav.addObject("usuario", flashMap.get("usuario"));
+            } else {
+                mav.addObject("usuario", new Usuario());
+            }
 
-        if (flashMap != null) {
-            mav.addObject("error", flashMap.get("error"));
-            mav.addObject("usuario", flashMap.get("usuario"));
-        } else {
-            mav.addObject("usuario", new Usuario());
+            mav.addObject("title", "Crear Usuario");
+            mav.addObject("roles",rolServicio.buscarTodos());
+            mav.addObject("action", "guardar");
+        }catch(Exception e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error",e.getMessage());
+            mav.setViewName("redirect:/usuarios");
         }
-
-        mav.addObject("title", "Crear Usuario");
-        mav.addObject("action", "guardar");
         return mav;
     }
     
     @GetMapping("/editar/{dni}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarUsuario(@PathVariable Long dni) {
         ModelAndView mav = new ModelAndView("usuario-formulario");
         mav.addObject("usuario", usuarioServicio.buscarPorDni(dni));
+        mav.addObject("roles",rolServicio.buscarTodos());
         mav.addObject("title", "Editar Usuario");
         mav.addObject("action", "modificar");
         return mav;
     }
     
+    @GetMapping("/reactivar/{correo}")
+    public ModelAndView reactivarUsuario(@PathVariable String correo,HttpServletRequest request) throws Exception{
+        ModelAndView mav = new ModelAndView("usuario-alta");
+        
+        mav.addObject("title", "Reactivar Usuario");        
+        mav.addObject("usuario", usuarioServicio.buscarPorCorreo(correo)); 
+        mav.addObject("action", "guardar2"); 
+
+        return mav;
+    }
+    
+    @PostMapping("/guardar2")
+    public RedirectView activarOn(@RequestParam Long dni, RedirectAttributes redirectAttributes) throws Exception{
+        try{
+            usuarioServicio.reactivar(dni);
+            redirectAttributes.addFlashAttribute("exito","USUARIO DADO DE ALTA NUEVAMENTE");
+                     
+        }catch(Exception e){
+            return new RedirectView("/usuarios");
+        }
+        
+        return new RedirectView("/usuarios");
+    }
+    
     @PostMapping("/guardar")
-    public RedirectView guardar(@ModelAttribute Usuario usuario, RedirectAttributes attributes) {
+    public RedirectView guardar(@RequestParam String correo,@RequestParam Rol rol,RedirectAttributes redirectAttributes,@ModelAttribute Usuario usuario, RedirectAttributes attributes) {
         try {            
-            usuarioServicio.crear(usuario.getDni(), usuario.getNombre(), usuario.getApellido(), usuario.getFechaNacimiento(), usuario.getCorreo(), usuario.getClave());
+            usuarioServicio.crear(usuario.getDni(), usuario.getNombre(), usuario.getApellido(), usuario.getFechaNacimiento(), usuario.getCorreo(), usuario.getClave(), rol);
             attributes.addFlashAttribute("exito", "El usuario ha sido creado exitosamente");
         } catch (Exception e) {
-            attributes.addFlashAttribute("usuario", usuario);
-            attributes.addFlashAttribute("error", e.getMessage());
-            return new RedirectView("/usuarios/crear");
+            if(e.getMessage().equals("usuarioEnLista")){
+                redirectAttributes.addFlashAttribute("error","EL USUARIO YA SE ENCUENTRA EN LA LISTA");
+                return new RedirectView("/usuarios");
+            }else{
+                 return new RedirectView("/usuarios/reactivar/"+correo);
+            }
         }
         return new RedirectView("/usuarios");
     }
     
     @PostMapping("/modificar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@ModelAttribute Usuario usuario, RedirectAttributes attributes) {
         usuarioServicio.modificar(usuario.getDni(),usuario.getNombre(),usuario.getApellido(),usuario.getFechaNacimiento(),usuario.getCorreo(),usuario.getClave());
         return new RedirectView("/usuarios");
@@ -141,11 +184,11 @@ public class UsuarioController {
     }
     
     @PostMapping("/registro")
-    public RedirectView signup(@RequestParam String nombre,@RequestParam Long dni, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave,@RequestParam LocalDate fechaNacimiento, RedirectAttributes attributes){
+    public RedirectView signup(@RequestParam String nombre,@RequestParam Long dni,@RequestParam Rol rol, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave,@RequestParam LocalDate fechaNacimiento, RedirectAttributes attributes){
         RedirectView redirectView = new RedirectView ("/login");
         
         try{
-            usuarioServicio.crear(dni, nombre, apellido, fechaNacimiento, correo, clave);
+            usuarioServicio.crear(dni, nombre, apellido, fechaNacimiento, correo, clave, rol);
         }catch(Exception e){
             attributes.addFlashAttribute("error", e.getMessage());
             attributes.addFlashAttribute("nombre", nombre);

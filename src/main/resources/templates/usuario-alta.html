@@ -16,7 +16,7 @@
         <navbar th:replace="fragmentos :: navbar"></navbar>
 
         <div class="container mt-5 main">
-            <h1 th:text="${title}">Reactivar libro</h1>
+            <h1 th:text="${title}">Reactivar usuario</h1>
             <hr class="mb-5 col-xl-12"/>
 
             <div class="row my-auto g-4 justify-content-evenly">
@@ -24,35 +24,35 @@
                 <div class="col-lg-5 p-0"> 
                     
                     <form autocomplete="off" class="needs-validation" id="formulario" method="POST"
-                        novalidate th:action="@{/libros/__${action}__}" th:object="${libro}">
+                        novalidate th:action="@{/usuarios/__${action}__}" th:object="${usuario}">
                         
                    
                         <div class="form-floating mb-3 col-xl-10">
-                                <input class="form-control" id="id" placeholder="Documento" required th:field="*{id}"
-                                    th:readonly="${libro.id != null}"
+                                <input class="form-control" id="dni" placeholder="Documento" required th:field="*{dni}"
+                                    th:readonly="${usuario.dni != null}"
                                     type="text"/>
-                                <label for="id">#ID</label>
+                                <label for="dni">#DNI</label>
                         </div>
                     
                         
                         <div class="form-floating mb-3 col-xl-10">
-                            <input class="form-control" id="titulo" placeholder="Titulo" required th:field="*{titulo}" th:readonly="${libro.titulo != null}" type="text"/>
-                            <label for="titulo">Título</label>
+                            <input class="form-control" id="nombre" placeholder="Nombre" required th:field="*{nombre}" th:readonly="${usuario.nombre != null}" type="text"/>
+                            <label for="titulo">Nombre</label>
                         </div>
                     
                 
                         <div class="row">
-                            <h5>¿Desea reactivar nuevamente este titulo?</h5>
+                            <h5>¿Desea reactivar nuevamente este usuario?</h5>
                         </div>                            
                                 <div class="grid-container">
                                     <div class="grid-item">
-                                        <form method="post" th:action="@{/libros/guardar2}">
+                                        <form method="post" th:action="@{/usuarios/habilitar}">
                                             <button class="btn btn-success btn-md" type="submit">Si</button>
                                         </form>
                                     </div>
                                     
                                     <div class="grid-item">
-                                        <form method="get" th:action="@{/libros}">
+                                        <form method="get" th:action="@{/usuarios}">
                                             <button class="btn btn-danger btn-md" type="submit">No</button>
                                         </form>
                                     </div>
@@ -63,13 +63,19 @@
 
                 </div>
 
-                <div class="col-lg-6 p-2 libroForm">
+                <div class="col-lg-6 p-2 autorForm">
                 </div>
 
             </div>
         </div>
 
-        <footer th:replace="fragmentos :: footer"></footer>
+        
+
+        <footer class="footer py-3 bg-dark fixed-bottom">
+            <div class="container d-flex justify-content-center">
+                <span class="text-muted">&copy; Bruno Redzio - 2021</span>
+            </div>
+        </footer>
 
         <!-- JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
